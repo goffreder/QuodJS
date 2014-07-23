@@ -9,33 +9,30 @@
 			}
 			scope[name].prototype = prototype;
 			return scope[name];
-		},
-		enumerable : false
+		}
 	});
 	Object.defineProperty(Object.prototype, "New", {
-		value : function(Class) {
-			var obj = new Class();
-			for(var p in Class)
-				obj[p] = Class[p];
+		value : function(Classname) {
+			var obj = new scope[Classname]();
+			for(var p in scope[Classname])
+				obj[p] = scope[Classname][p];
 			return obj;
-		},
-		enumerable : false
+		}
 	});
 	Object.defineProperty(Function.prototype, "Extends", {
-		value: function (Class) {
-			for(var p in Class.prototype)
+		value: function (Classname) {
+			for(var p in scope[Classname].prototype)
 				if('undefined' === typeof this.prototype[p])
-					this.prototype[p] = Class.prototype[p];
-			for(var p in Class) this[p] = Class[p];
-			this.prototype.superclass = Class;
-			return true;
-		},
-		enumerable: false
+					this.prototype[p] = scope[Classname].prototype[p];
+			for(var p in scope[Classname])
+				if('undefined' === typeof this[p])
+					this[p] = scope[Classname][p];
+			this.prototype.superclass = scope[Classname];
+		}
 	});
 	Object.defineProperty(Object.prototype, "Super", {
 		value : function(Class) {
 			return Class.superclass.prototype;
-		},
-		enumerable : false
+		}
 	});
 })(this);
