@@ -14,7 +14,7 @@ can be found in `docs/ooJS.js`.
 
 ## Install
 
-To use ooJS just include `src/ooJS.js` in your HTML file.
+To use ooJS just include `src/ooJS.min.js` in your HTML file.
 
 ## Node.js
 
@@ -24,6 +24,12 @@ ooJS is tested and working with Node.js v0.11.13.
 
 `testset.js` contains a few examples of what you can achieve with ooJS.
 You can see it running at `tests/index.html`.
+
+## Changelog
+
+### v0.0.1
+
+Initial public release.
 
 ## Disclaimer
 
