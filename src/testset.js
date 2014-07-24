@@ -1,3 +1,10 @@
+/*!
+* ooJS - Object Oriented JavaScript v0.0.1
+* http://goffreder.github.io
+*
+* Copyright 2014, Emanuele Biancardi
+* Released under the MIT License
+*/
 new Class('A', {
     pippo : "pluto"
 }, {

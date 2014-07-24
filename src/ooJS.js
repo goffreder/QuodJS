@@ -1,3 +1,10 @@
+/*!
+* ooJS - Object Oriented JavaScript v0.0.1
+* http://goffreder.github.io
+*
+* Copyright 2014, Emanuele Biancardi
+* Released under the MIT License
+*/
 (function(scope) {
 	Object.defineProperty(Object.prototype, "Class", {
 		value : function(name, properties, prototype) {

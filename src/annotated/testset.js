@@ -1,5 +1,5 @@
 // # ooJS - Test Set
-/**
+/*!
  * ooJS - Object Oriented JavaScript v0.0.1
  * http://goffreder.github.io
  *
