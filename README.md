@@ -1,4 +1,4 @@
-# Quod - Object Oriented JavaScript
+# QuodJS - Object Oriented JavaScript
 
 A small library to add basic OO features to JavaScript.
 
@@ -10,19 +10,19 @@ v0.0.1
 
 An annotated version of the code is available in `src/annotated`,
 and the generated documentation (made with [Docco] (http://jashkenas.github.io/docco/))
-can be found in `docs/ooJS.js`.
+can be found in `docs/quod.html`.
 
 ## Install
 
-To use Quod just include `src/quod.min.js` in your HTML file.
+To use QuodJS just include `src/quod.min.js` in your HTML file.
 
 ## Node.js
 
-Quod is tested and working with Node.js v0.11.13.
+QuodJS is tested and working with Node.js v0.11.13.
 
 ## Testing
 
-`testset.js` contains a few examples of what you can achieve with Quod.
+`testset.js` contains a few examples of what you can achieve with QuodJS.
 You can see it running at `tests/index.html`.
 
 ## Changelog
