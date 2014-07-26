@@ -1,3 +1,3 @@
-# ooJS - Object-Oriented JavaScript
+# QuodJS - Object-Oriented JavaScript
 
-This is the project page for ooJS project.
+This is the project page for QuodJS project.
