@@ -1,5 +1,5 @@
 /*!
-* ooJS - Object Oriented JavaScript v0.0.1
+* QuodJS - Object Oriented JavaScript v0.0.1
 * http://goffreder.github.io
 *
 * Copyright 2014, Emanuele Biancardi
@@ -8,8 +8,10 @@
 (function(scope) {
 	Object.defineProperty(Object.prototype, "Class", {
 		value : function(name, properties, prototype) {
+            var func = "return function " + name + "(){";
+            func += " return this; }";
 			scope[name] = new Function(
-				"return function " + name + "(){ return this; }"
+				func
 			)();
 			for(var p in properties) {
 				scope[name][p] = properties[p];

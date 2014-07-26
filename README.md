@@ -1,4 +1,4 @@
-# ooJS - Object Oriented JavaScript
+# Quod - Object Oriented JavaScript
 
 A small library to add basic OO features to JavaScript.
 
@@ -14,15 +14,15 @@ can be found in `docs/ooJS.js`.
 
 ## Install
 
-To use ooJS just include `src/ooJS.min.js` in your HTML file.
+To use Quod just include `src/quod.min.js` in your HTML file.
 
 ## Node.js
 
-ooJS is tested and working with Node.js v0.11.13.
+Quod is tested and working with Node.js v0.11.13.
 
 ## Testing
 
-`testset.js` contains a few examples of what you can achieve with ooJS.
+`testset.js` contains a few examples of what you can achieve with Quod.
 You can see it running at `tests/index.html`.
 
 ## Changelog

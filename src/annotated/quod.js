@@ -1,6 +1,6 @@
-// # ooJS - Object Oriented JavaScript
+// # QuodJS - Object Oriented JavaScript
 /*!
- * ooJS - Object Oriented JavaScript v0.0.1
+ * QuodJS - Object Oriented JavaScript v0.0.1
  * http://goffreder.github.io
  *
  * Copyright 2014, Emanuele Biancardi
