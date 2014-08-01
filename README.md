@@ -4,7 +4,14 @@ A small library to add basic OO features to JavaScript.
 
 ## Version
 
-v0.0.1
+v0.0.2
+
+## Model
+This library tries to emulate OO functionalities in the same way PHP does. The same code
+should behave the same way both in PHP and in QuodJS.
+
+This module is slightly different from other languages like Java. For example, in QuodJS
+when extending a class you can also override properties instead of just shadowing them like in Java.
 
 ## Documentation
 
@@ -22,8 +29,9 @@ QuodJS is tested and working with Node.js v0.11.13.
 
 ## Testing
 
-`testset.js` contains a few examples of what you can achieve with QuodJS.
-You can see it running at `tests/index.html`.
+`tests` contains an usage example and a few unit tests to run against the code.
+The same test can be run in Node.js by installing [QUnit module for Node] (https://github.com/kof/node-qunit)
+and running command `qunit -c src/quod.js -t tests/quod.tests.js` in the root folder.
 
 ## Changelog
 

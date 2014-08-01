@@ -11,27 +11,6 @@
   <div id="container">
     <div id="background"></div>
     
-      <ul id="jump_to">
-        <li>
-          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
-          <a class="small" href="javascript:void(0);">+</a>
-          <div id="jump_wrapper">
-          <div id="jump_page">
-            
-              
-              <a class="source" href="quod.html">
-                quod.js
-              </a>
-            
-              
-              <a class="source" href="testset.html">
-                testset.js
-              </a>
-            
-          </div>
-        </li>
-      </ul>
-    
     <ul class="sections">
         
         
@@ -70,7 +49,7 @@ also within Node.js.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope)</span> {</span></pre></div></div>
             
         </li>
         
@@ -83,7 +62,8 @@ also within Node.js.</p>
               </div>
               <p>This function emulates the <code>Class</code> keyword of object-oriented languages.</p>
 <p>It takes as arguments the <code>name</code> of the new class, its public <code>properties</code>
-and its <code>prototype</code>, and returns the new Class object.</p>
+and its <code>prototype</code>, and returns the new Class object. The methods in the prototype
+MUST NOT be anonymous for the <code>Super</code> mechanism to work correctly.</p>
 <p>To do this, it adds a <code>Class</code> property to the <code>Object</code> prototype
 (so it can be called upon the scope).</p>
 
@@ -112,7 +92,7 @@ and its <code>prototype</code>, and returns the new Class object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		value : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, properties, prototype)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		value : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, properties, prototype)</span> {</span></pre></div></div>
             
         </li>
         
@@ -129,8 +109,10 @@ object that returns a function <code>name</code>, that in turn returns this
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			scope[name] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Function</span>(
-				<span class="hljs-string">"return function "</span> + name + <span class="hljs-string">"(){ return this; }"</span>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> func = <span class="hljs-string">"return function "</span> + name + <span class="hljs-string">"(){"</span>;
+			func += <span class="hljs-string">" return this; }"</span>;
+			scope[name] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Function</span>(
+				func
 			)();</pre></div></div>
             
         </li>
@@ -175,7 +157,7 @@ as public properties.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Returns the construtor.</p>
+              <p>Returns the constructor.</p>
 
             </div>
             
@@ -222,7 +204,7 @@ to the new object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		value : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Classname)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		value : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Classname)</span> {</span></pre></div></div>
             
         </li>
         
@@ -308,7 +290,7 @@ a new Class instance.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		value: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Classname)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		value: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Classname)</span> {</span></pre></div></div>
             
         </li>
         
@@ -326,7 +308,7 @@ to the class).</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> p <span class="hljs-keyword">in</span> scope[Classname].prototype)
-				<span class="hljs-keyword">if</span>(<span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.prototype[p])
+				<span class="hljs-keyword">if</span>(<span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.prototype[p]) {
 					<span class="hljs-keyword">this</span>.prototype[p] = scope[Classname].prototype[p];</pre></div></div>
             
         </li>
@@ -338,15 +320,19 @@ to the class).</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>Iterates through the extended class properties, adding to the extending
-class any property that has not been overrided (and thus not already added
-to the class).</p>
+              <p>To maintain a reference to the superclasses methods and prototype, we add an
+<code>heritage</code> object where we store for every inherited method or property, who this class
+has inherited it from.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> p <span class="hljs-keyword">in</span> scope[Classname])
-				<span class="hljs-keyword">if</span>(<span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>[p])
-					<span class="hljs-keyword">this</span>[p] = scope[Classname][p];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(<span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.prototype.heritage)
+						<span class="hljs-keyword">this</span>.prototype.heritage = {};
+					<span class="hljs-keyword">if</span>(<span class="hljs-string">'undefined'</span> !== <span class="hljs-keyword">typeof</span> scope[Classname].prototype.heritage)
+						<span class="hljs-keyword">this</span>.prototype.heritage[p] = scope[Classname].prototype.heritage[p] || Classname;
+					<span class="hljs-keyword">else</span>
+						<span class="hljs-keyword">this</span>.prototype.heritage[p] = Classname;
+			}</pre></div></div>
             
         </li>
         
@@ -356,6 +342,32 @@ to the class).</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Iterates through the extended class properties, adding to the extending
+class any property that has not been overrided (and thus not already added
+to the class).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> p <span class="hljs-keyword">in</span> scope[Classname])
+				<span class="hljs-keyword">if</span>(<span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>[p]) {
+					<span class="hljs-keyword">this</span>[p] = scope[Classname][p];
+					<span class="hljs-keyword">if</span>(<span class="hljs-string">'undefined'</span> === <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.prototype.heritage)
+						<span class="hljs-keyword">this</span>.prototype.heritage = {};
+					<span class="hljs-keyword">if</span>(<span class="hljs-string">'undefined'</span> !== <span class="hljs-keyword">typeof</span> scope[Classname].prototype.heritage)
+						<span class="hljs-keyword">this</span>.prototype.heritage[p] = scope[Classname].prototype.heritage[p] || Classname;
+					<span class="hljs-keyword">else</span>
+						<span class="hljs-keyword">this</span>.prototype.heritage[p] = Classname;
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Sets the extended class as <code>superclass</code> for the extending class.
 The <code>superclass</code> property is added to the prototype to maintain
@@ -370,15 +382,15 @@ some kind of information hiding.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>This function emulates the <code>Super</code> keyword of object-oriented languages.</p>
-<p>It takes as argument the Class of the instance we’re currently in and returns
-its prototype.</p>
+<p>It takes as argument the method or the property we want from the superclass, plus any other argument
+that we need to pass to it if it’s a method.</p>
 <p>Again, this function is added to the <code>Object</code> prototype.</p>
 
             </div>
@@ -386,25 +398,15 @@ its prototype.</p>
             <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
 	* Returns the superclass prototype for the given class.
 	* @method Super
-	* @param {String} Class The instance class.
-	* @return {Object} The superclass prototype.
+	* @param {String} p The method or the property we want from the superclass.
+	* @return {Mixed} The wanted property or method return.
 	*/</span>
-	<span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-built_in">Object</span>.prototype, <span class="hljs-string">"Super"</span>, {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p>The value for the <code>Super</code> property.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		value : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Class)</span> </span>{</pre></div></div>
+	<span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-built_in">Object</span>.prototype, <span class="hljs-string">"Super"</span>, {
+		value : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span> {</span>
+			<span class="hljs-keyword">var</span> caller = <span class="hljs-built_in">arguments</span>.callee.caller.name;
+			<span class="hljs-keyword">var</span> args = [].splice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">0</span>);
+			args.splice(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+			<span class="hljs-keyword">var</span> prop;</pre></div></div>
             
         </li>
         
@@ -415,12 +417,16 @@ its prototype.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>Returns the superclass prototype. The superclass value is set in the
-<code>Extends</code> method inside the <code>Class</code> prototype.</p>
+              <p>If we call <code>Super</code> in an inherited method, we need to get method or property <code>p</code> from
+the class we have inherited it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> Class.superclass.prototype;
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(<span class="hljs-string">'undefined'</span> !== <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.heritage[caller]) { prop = scope[<span class="hljs-keyword">this</span>.heritage[caller]].prototype.superclass.prototype[p]; }
+			<span class="hljs-keyword">else</span> { prop = <span class="hljs-keyword">this</span>.superclass.prototype[p]; }
+			<span class="hljs-keyword">if</span>(<span class="hljs-string">'function'</span> === <span class="hljs-keyword">typeof</span> prop)
+				<span class="hljs-keyword">return</span> prop.apply(<span class="hljs-keyword">this</span>, args);
+			<span class="hljs-keyword">return</span> prop;
 		}
 	});
 })(<span class="hljs-keyword">this</span>);</pre></div></div>

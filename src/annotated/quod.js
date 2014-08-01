@@ -14,7 +14,8 @@
 	// This function emulates the `Class` keyword of object-oriented languages.
 	//
 	// It takes as arguments the `name` of the new class, its public `properties`
-	// and its `prototype`, and returns the new Class object.
+	// and its `prototype`, and returns the new Class object. The methods in the prototype
+	// MUST NOT be anonymous for the `Super` mechanism to work correctly.
 	//
 	// To do this, it adds a `Class` property to the `Object` prototype
 	// (so it can be called upon the scope).
@@ -32,8 +33,10 @@
 			// Adds a `name` property to the `scope` and sets it to a new, auto-executing `Function`
 			// object that returns a function `name`, that in turn returns this
 			// (thus becoming a constructor for `name` objects).
+			var func = "return function " + name + "(){";
+			func += " return this; }";
 			scope[name] = new Function(
-				"return function " + name + "(){ return this; }"
+				func
 			)();
 			// Iterates through the passed `properties` and adds them to the constructor
 			// as public properties.
@@ -42,7 +45,7 @@
 			}
 			// The constructor prototype is set to the passed `prototype`. All its methods are public.
 			scope[name].prototype = prototype;
-			// Returns the construtor.
+			// Returns the constructor.
 			return scope[name];
 		}
 	});
@@ -91,14 +94,31 @@
 			// class any method that has not been overrided (and thus not already added
 			// to the class).
 			for(var p in scope[Classname].prototype)
-				if('undefined' === typeof this.prototype[p])
+				if('undefined' === typeof this.prototype[p]) {
 					this.prototype[p] = scope[Classname].prototype[p];
+					// To maintain a reference to the superclasses methods and prototype, we add an
+					// `heritage` object where we store for every inherited method or property, who this class
+					// has inherited it from.
+					if('undefined' === typeof this.prototype.heritage)
+						this.prototype.heritage = {};
+					if('undefined' !== typeof scope[Classname].prototype.heritage)
+						this.prototype.heritage[p] = scope[Classname].prototype.heritage[p] || Classname;
+					else
+						this.prototype.heritage[p] = Classname;
+			}
 			// Iterates through the extended class properties, adding to the extending
 			// class any property that has not been overrided (and thus not already added
 			// to the class).
 			for(var p in scope[Classname])
-				if('undefined' === typeof this[p])
+				if('undefined' === typeof this[p]) {
 					this[p] = scope[Classname][p];
+					if('undefined' === typeof this.prototype.heritage)
+						this.prototype.heritage = {};
+					if('undefined' !== typeof scope[Classname].prototype.heritage)
+						this.prototype.heritage[p] = scope[Classname].prototype.heritage[p] || Classname;
+					else
+						this.prototype.heritage[p] = Classname;
+				}
 			// Sets the extended class as `superclass` for the extending class.
 			// The `superclass` property is added to the prototype to maintain
 			// some kind of information hiding.
@@ -107,22 +127,29 @@
 	});
 	// This function emulates the `Super` keyword of object-oriented languages.
 	//
-	// It takes as argument the Class of the instance we're currently in and returns
-	// its prototype.
+	// It takes as argument the method or the property we want from the superclass, plus any other argument
+	// that we need to pass to it if it's a method.
 	//
 	// Again, this function is added to the `Object` prototype.
 	/**
 	* Returns the superclass prototype for the given class.
 	* @method Super
-	* @param {String} Class The instance class.
-	* @return {Object} The superclass prototype.
+	* @param {String} p The method or the property we want from the superclass.
+	* @return {Mixed} The wanted property or method return.
 	*/
 	Object.defineProperty(Object.prototype, "Super", {
-		// The value for the `Super` property.
-		value : function(Class) {
-			// Returns the superclass prototype. The superclass value is set in the
-			// `Extends` method inside the `Class` prototype.
-			return Class.superclass.prototype;
+		value : function(p) {
+			var caller = arguments.callee.caller.name;
+			var args = [].splice.call(arguments, 0);
+			args.splice(0, 1);
+			var prop;
+			// If we call `Super` in an inherited method, we need to get method or property `p` from
+			// the class we have inherited it.
+			if('undefined' !== typeof this.heritage[caller]) { prop = scope[this.heritage[caller]].prototype.superclass.prototype[p]; }
+			else { prop = this.superclass.prototype[p]; }
+			if('function' === typeof prop)
+				return prop.apply(this, args);
+			return prop;
 		}
 	});
 })(this);
