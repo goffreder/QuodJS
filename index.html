@@ -36,7 +36,16 @@
 <h2>
 <a name="version" class="anchor" href="#version"><span class="octicon octicon-link"></span></a>Version</h2>
 
-<p>v0.0.1</p>
+<p>v0.0.2</p>
+
+<h2>
+<a name="model" class="anchor" href="#model"><span class="octicon octicon-link"></span></a>Model</h2>
+
+<p>This library tries to emulate OO functionalities in the same way PHP does. The same code
+should behave the same way both in PHP and in QuodJS.</p>
+
+<p>This module is slightly different from other languages like Java. For example, in QuodJS
+when extending a class you can also override properties instead of just shadowing them like in Java.</p>
 
 <h2>
 <a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
@@ -58,8 +67,9 @@ can be found in <code>docs/quod.html</code> (and also <a href="docs/quod.html">h
 <h2>
 <a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing</h2>
 
-<p><code>testset.js</code> contains a few examples of what you can achieve with QuodJS.
-You can see it running at <code>tests/index.html</code>.</p>
+<p><code>tests</code> contains an usage example and a few unit tests to run against the code.
+The same test can be run in Node.js by installing <a href="https://github.com/kof/node-qunit">QUnit module for Node</a>
+and running command <code>qunit -c src/quod.js -t tests/quod.tests.js</code> in the root folder.</p>
 
 <h2>
 <a name="changelog" class="anchor" href="#changelog"><span class="octicon octicon-link"></span></a>Changelog</h2>
