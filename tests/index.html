@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>QuodJS Tests</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.14.0.css">
+    <link rel="stylesheet" href="jquery.snippet.min.css">
+</head>
+<body>
+    <div id="testfield"></div>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="http://code.jquery.com/qunit/qunit-1.14.0.js"></script>
+    <script src="jquery.snippet.min.js"></script>
+    <script src="../src/quod.min.js"></script>
+    <script src="quod.tests.js"></script>
+    <script>
+    (function($) {
+        $("#testfield").append($("<pre>").addClass("js").html(setTestField+''));
+        $("pre.js").snippet("javascript",{style:"berries-dark",showNum:false,collapse:true})
+    })($);
+    </script>
+</body>
+</html>
